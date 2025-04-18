@@ -17,14 +17,14 @@ struct ImageCell: View {
                 case .empty:
                     Color.gray
                         .aspectRatio(1, contentMode: .fit)
-                        .overlay(ProgressView())
+                        .shimmer()
                 case .success(let image):
                     image
                         .resizable()
                         .aspectRatio(1, contentMode: .fit)
                         .clipped()
                 case .failure:
-                    Color.red
+                    Color.gray
                         .aspectRatio(1, contentMode: .fit)
                 @unknown default:
                     EmptyView()

@@ -22,8 +22,9 @@ struct DetailView: View {
                 AsyncImage(url: URL(string: image.urls.regular)) { phase in
                     switch phase {
                     case .empty:
-                        ProgressView()
+                        Color.gray
                             .frame(height: 300)
+                            .shimmer()
                     case .success(let image):
                         image
                             .resizable()
@@ -39,8 +40,10 @@ struct DetailView: View {
                     AsyncImage(url: URL(string: image.user.profileImage.small)) { phase in
                         switch phase {
                         case .empty:
-                            ProgressView()
+                            Circle()
+                                .fill(Color.gray)
                                 .frame(width: 40, height: 40)
+                                .shimmer()
                         case .success(let image):
                             image
                                 .resizable()

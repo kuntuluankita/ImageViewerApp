@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
     @State private var isDarkMode: Bool = false
@@ -33,11 +31,12 @@ struct ContentView: View {
                 Toggle(isOn: $isDarkMode) {
                     Text("Dark Mode")
                 }
-                .onChange(of: isDarkMode) { value in
-                    if value {
-                        UIApplication.shared.windows.first?.overrideUserInterfaceStyle = .dark
-                    } else {
-                        UIApplication.shared.windows.first?.overrideUserInterfaceStyle = .light
+                .onChange(of: isDarkMode) { newValue in
+                    // Handle dark mode change
+                    if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+                        if let window = windowScene.windows.first {
+                            window.overrideUserInterfaceStyle = newValue ? .dark : .light
+                        }
                     }
                 }
                 .toggleStyle(SwitchToggleStyle())

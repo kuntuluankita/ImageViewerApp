@@ -9,7 +9,6 @@ import SwiftUI
 
 struct FavoritesView: View {
     @StateObject private var viewModel = FavoritesViewModel()
-    @State private var selectedImage: FavoriteImage?
 
     var body: some View {
         NavigationView {
@@ -48,9 +47,14 @@ struct FavoritesView: View {
                                     .font(.caption)
                                     .padding(.horizontal, 4)
                             }
-                            .onTapGesture {
-                                selectedImage = image
-                            }
+                            .background(
+                                NavigationLink(
+                                    destination: getDetailView(for: image)
+                                ) {
+                                    EmptyView()
+                                }
+                                .opacity(0) // Hide the link's default appearance
+                            )
                         }
                         .onDelete { indexSet in
                             // Capture IDs before deleting from Realm to avoid invalid access
@@ -68,14 +72,13 @@ struct FavoritesView: View {
                 EditButton()
             }
         }
-        .sheet(item: $selectedImage) { image in
-            if let converted = image.toUnsplashImage() {
-                DetailView(image: converted)
-            }
-        }
+    }
+
+    private func getDetailView(for image: FavoriteImage) -> some View {
+        let unsplashImage = image.toUnsplashImage() ?? UnsplashImageModel(id: "", urls: ImageURLs(small: "", regular: ""), user: PhotographerModel(name: "", username: "", profileImage: ProfileImage(small: "")))
+        return DetailView(image: unsplashImage)
     }
 }
-
 
 #Preview {
     FavoritesView()
